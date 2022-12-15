@@ -16,9 +16,6 @@ const invoiceRoute = require('./app/invoice/router');
 const mongoose = require('mongoose');
 const connectDB = require('./database/index');
 
-dotenv.config();
-connectDB();
-const PORT = process.env.PORT || 3000
 
 var app = express();
 app.all('*', (req,res) => {
@@ -35,11 +32,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(decodeToken());
-
-mongoose.connection.once( open , () => {
+connectDB();
+mongoose.connection.once( 'open' , () => {
   console.log ('Connect mongoDB')
-  app.listen(PORT, () => console.log("server running"))
 })
+mongoose.connection.on('error', err => {
+  console.log(err)
+})
+
 app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 })
