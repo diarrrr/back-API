@@ -14,13 +14,16 @@ const cartRoute = require('./app/cart/router');
 const orderRoute = require('./app/order/router');
 const invoiceRoute = require('./app/invoice/router');
 const mongoose = require('mongoose');
-const connectDB = require('./database/index')
+const connectDB = require('./database/index');
 
+dotenv.config();
+connectDB();
 const PORT = process.env.PORT || 3000
 
-
 var app = express();
-
+app.all('*', (req,res) => {
+  res.json({"every thing":"is awesome"})
+})
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -32,12 +35,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(decodeToken());
-connectDB()
+
 mongoose.connection.once( open , () => {
   console.log ('Connect mongoDB')
   app.listen(PORT, () => console.log("server running"))
 })
-
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+})
 //Routes go here
 
 app.use('/auth', authRoute);
