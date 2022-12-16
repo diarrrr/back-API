@@ -33,6 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(decodeToken());
 connectDB();
+app.listen(process.env.PORT||3000);
 mongoose.connection.once( 'open' , () => {
   console.log ('Connect mongoDB')
 })
