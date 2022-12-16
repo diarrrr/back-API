@@ -40,9 +40,6 @@ mongoose.connection.on('error', err => {
   console.log(err)
 })
 
-app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
-})
 //Routes go here
 
 app.use('/auth', authRoute);
