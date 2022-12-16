@@ -15,12 +15,11 @@ const orderRoute = require('./app/order/router');
 const invoiceRoute = require('./app/invoice/router');
 const mongoose = require('mongoose');
 const connectDB = require('./database/index');
+const dotenv = require('dotenv');
 
 
 var app = express();
-app.all('*', (req,res) => {
-  res.json({"every thing":"is awesome"})
-})
+dotenv.config();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
